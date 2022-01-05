@@ -27,7 +27,7 @@ public class IntegerDivisionCalculator {
             counter++;
             remainder = combineNumbers(remainder, localDividend);
             if (remainder >= divisor) {
-                divisionSteps.add(buildingStep(remainder, divisor));
+                divisionSteps.add(buildDivisionStep(remainder, divisor));
                 remainder = remainder % divisor;
             }
 
@@ -48,7 +48,7 @@ public class IntegerDivisionCalculator {
         return x * 10 + y;
     }
 
-    private DivisionStep buildingStep(int dividend, int divisor) {
+    private DivisionStep buildDivisionStep(int dividend, int divisor) {
         int stepRemainder = dividend % divisor;
         int stepDivisorMultiple = dividend - stepRemainder;
 

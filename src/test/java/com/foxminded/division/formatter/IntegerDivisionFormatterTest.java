@@ -22,14 +22,18 @@ class IntegerDivisionFormatterTest {
 
     @Test
     void formatDivisionResult_shouldThrowException_whenDivisorIsZero() {
+        int dividend = 1234;
+        int divisor = 0;
 
-        assertThrows(ArithmeticException.class, () -> formatter.formatDivisionResult(calculator.calculateDivisionResult(1234, 0)));
+        assertThrows(ArithmeticException.class, () -> formatter.formatDivisionResult(calculator.calculateDivisionResult(dividend, divisor)));
     }
 
     @Test
     void formatDivisionResult_shouldPrintOneStep_whenDividendIsZero() {
+        int dividend = 0;
+        int divisor = 2000;
 
-        DivisionResult divisionResult = calculator.calculateDivisionResult(0, 2000);
+        DivisionResult divisionResult = calculator.calculateDivisionResult(dividend, divisor);
         String actual = formatter.formatDivisionResult(divisionResult);
 
         String expected =
@@ -43,7 +47,10 @@ class IntegerDivisionFormatterTest {
 
     @Test
     void formatDivisionResult_shouldFormatDivisionResult_whenDividendMoreThanDivisor() {
-        DivisionResult result = calculator.calculateDivisionResult(1234, 100);
+        int dividend = 1234;
+        int divisor = 100;
+
+        DivisionResult result = calculator.calculateDivisionResult(dividend, divisor);
         String formattedResult = formatter.formatDivisionResult(result);
 
         String expected =
@@ -82,8 +89,10 @@ class IntegerDivisionFormatterTest {
 
     @Test
     void formatDivisionResult_shouldFormatStringWithSeveralSteps_whenDividendIsLessThanZero() {
+        int dividend = 642;
+        int divisor = -2;
 
-        DivisionResult divisionResult = calculator.calculateDivisionResult(642, -2);
+        DivisionResult divisionResult = calculator.calculateDivisionResult(dividend, divisor);
         String actual = formatter.formatDivisionResult(divisionResult);
 
         String expected =
@@ -103,8 +112,10 @@ class IntegerDivisionFormatterTest {
 
     @Test
     void formatDivisionResult_shouldFormatDivisionResult_whenDividendHasZeros() {
+        int dividend = 300010003;
+        int divisor = 2;
 
-        DivisionResult divisionResult = calculator.calculateDivisionResult(300010003, 2);
+        DivisionResult divisionResult = calculator.calculateDivisionResult(dividend, divisor);
         String actual = formatter.formatDivisionResult(divisionResult);
 
         String expected =
@@ -127,15 +138,17 @@ class IntegerDivisionFormatterTest {
 
     @Test
     void formatDivisionResult_shouldFormatDivisionResult_whenDividendHasManyZeros() {
+        int dividend = 30000003;
+        int divisor = 15;
 
-        DivisionResult divisionResult = calculator.calculateDivisionResult(30000003, 15);
+        DivisionResult divisionResult = calculator.calculateDivisionResult(dividend, divisor);
         String actual = formatter.formatDivisionResult(divisionResult);
 
         String expected =
             "_30000003|15" + "\n" +
-                " 30      |-------" + "\n" +
-                " --      |2000000" + "\n" +
-                " 3";
+            " 30      |-------" + "\n" +
+            " --      |2000000" + "\n" +
+            " 3";
 
 
         assertEquals(expected, actual);
