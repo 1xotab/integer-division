@@ -1,31 +1,20 @@
 package com.foxminded.division.formatter;
 
-import com.foxminded.division.calculator.IntegerDivisionCalculator;
 import com.foxminded.division.model.DivisionResult;
+import com.foxminded.division.model.DivisionStep;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class IntegerDivisionFormatterTest {
 
-    IntegerDivisionCalculator calculator = new IntegerDivisionCalculator();
     IntegerDivisionFormatter formatter = new IntegerDivisionFormatter();
 
-
     @Test
-    void formatDivisionResult_shouldThrowException_whenFormatDivisionResultNull() {
-
+    void formatDivisionResult_shouldThrowException_whenDivisionResultNull() {
         assertThrows(NullPointerException.class, () -> formatter.formatDivisionResult(null));
-    }
-
-    @Test
-    void formatDivisionResult_shouldThrowException_whenDivisorIsZero() {
-        int dividend = 1234;
-        int divisor = 0;
-
-        assertThrows(ArithmeticException.class, () -> formatter.formatDivisionResult(calculator.calculateDivisionResult(dividend, divisor)));
     }
 
     @Test
@@ -33,7 +22,10 @@ class IntegerDivisionFormatterTest {
         int dividend = 0;
         int divisor = 2000;
 
-        DivisionResult divisionResult = calculator.calculateDivisionResult(dividend, divisor);
+        ArrayList<DivisionStep> divisionSteps = new ArrayList<>();
+        divisionSteps.add(new DivisionStep(0, 0, 0));
+        divisionSteps.add(new DivisionStep(0, 0, 0));
+        DivisionResult divisionResult = new DivisionResult(dividend, divisor, 0, divisionSteps);
         String actual = formatter.formatDivisionResult(divisionResult);
 
         String expected =
@@ -50,8 +42,12 @@ class IntegerDivisionFormatterTest {
         int dividend = 1234;
         int divisor = 100;
 
-        DivisionResult result = calculator.calculateDivisionResult(dividend, divisor);
-        String formattedResult = formatter.formatDivisionResult(result);
+        ArrayList<DivisionStep> divisionSteps = new ArrayList<>();
+        divisionSteps.add(new DivisionStep(123, 23, 100));
+        divisionSteps.add(new DivisionStep(234, 34, 200));
+        divisionSteps.add(new DivisionStep(0, 34, 0));
+        DivisionResult divisionResult = new DivisionResult(dividend, divisor, 12, divisionSteps);
+        String actual = formatter.formatDivisionResult(divisionResult);
 
         String expected =
                 "_1234|100" + "\n" +
@@ -60,43 +56,70 @@ class IntegerDivisionFormatterTest {
                 " _234" + "\n" +
                 "  200" + "\n" +
                 "  ---" + "\n" +
-                "  34";
+                "   34";
 
-        assertEquals(expected, formattedResult);
+        assertEquals(expected, actual);
     }
 
-//    @Test
-//    void formatDivisionResult_shouldPutCorrectNumberDashes_whenDivisorGreaterThanQuotient() {
-//
-//        DivisionResult result = calculator.calculateDivisionResult(100, 20);
-//        String formattedResult = formatter.formatDivisionResult(result);
-//
-//        boolean substringAvailability = formattedResult.contains(" 100|--");
-//
-//        assertTrue(substringAvailability);
-//    }
-//
-//    @Test
-//    void formatDivisionResult_shouldPutCorrectNumberDashes_whenDivisorLessThanQuotient() {
-//
-//        DivisionResult result = calculator.calculateDivisionResult(100, 5);
-//        String formattedResult = formatter.formatDivisionResult(result);
-//
-//        boolean substringAvailability = formattedResult.contains(" 10 |--");
-//
-//        assertTrue(substringAvailability);
-//    }
-
     @Test
-    void formatDivisionResult_shouldFormatStringWithSeveralSteps_whenDividendIsLessThanZero() {
-        int dividend = 642;
-        int divisor = -2;
+    void formatDivisionResult_shouldFormatDivisionResult_whenDividendLessThanDivisor() {
+        int dividend = 123;
+        int divisor = 1000;
 
-        DivisionResult divisionResult = calculator.calculateDivisionResult(dividend, divisor);
+        ArrayList<DivisionStep> divisionSteps = new ArrayList<>();
+        divisionSteps.add(new DivisionStep(123, 123, 0));
+        divisionSteps.add(new DivisionStep(0, 123, 0));
+        DivisionResult divisionResult = new DivisionResult(dividend, divisor, 0, divisionSteps);
         String actual = formatter.formatDivisionResult(divisionResult);
 
         String expected =
-            "_642|-2" + "\n" +
+                "_123|1000" + "\n" +
+                "   0|----" + "\n" +
+                "   -|0" + "\n" +
+                " 123";
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void formatDivisionResult_shouldFormatDivisionResult_whenDividendLessThanZero() {
+        int dividend = -1234;
+        int divisor = 100;
+
+        ArrayList<DivisionStep> divisionSteps = new ArrayList<>();
+        divisionSteps.add(new DivisionStep(123, 23, 100));
+        divisionSteps.add(new DivisionStep(234, 34, 200));
+        divisionSteps.add(new DivisionStep(0, 34, 0));
+        DivisionResult divisionResult = new DivisionResult(dividend*(-1), divisor, -12, divisionSteps);
+        String actual = formatter.formatDivisionResult(divisionResult);
+
+        String expected =
+                "_1234|100" + "\n" +
+                " 100 |---" + "\n" +
+                " --- |-12" + "\n" +
+                " _234" + "\n" +
+                "  200" + "\n" +
+                "  ---" + "\n" +
+                "   34";
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void formatDivisionResult_shouldFormatDivisionResult_whenDivisorIsNegative(){
+        int dividend = 642;
+        int divisor = -2;
+
+        ArrayList<DivisionStep> divisionSteps = new ArrayList<>();
+        divisionSteps.add(new DivisionStep(6, 0, 6));
+        divisionSteps.add(new DivisionStep(4, 0, 4));
+        divisionSteps.add(new DivisionStep(2, 0, 2));
+        divisionSteps.add(new DivisionStep(0, 0, 0));
+        DivisionResult divisionResult = new DivisionResult(dividend, divisor, -321, divisionSteps);
+        String actual = formatter.formatDivisionResult(divisionResult);
+
+        String expected =
+                "_642|-2" + "\n" +
                 " 6  |----" + "\n" +
                 " -  |-321" + "\n" +
                 " _4" + "\n" +
@@ -111,27 +134,57 @@ class IntegerDivisionFormatterTest {
     }
 
     @Test
+    void formatDivisionResult_shouldFormatDivisionResult_whenDividendIsNegative(){
+        int dividend = -46;
+        int divisor = 2;
+
+        ArrayList<DivisionStep> divisionSteps = new ArrayList<>();
+        divisionSteps.add(new DivisionStep(4, 0, 4));
+        divisionSteps.add(new DivisionStep(6, 0, 6));
+        divisionSteps.add(new DivisionStep(0, 0, 0));
+        DivisionResult divisionResult = new DivisionResult(dividend * -1, divisor, -23, divisionSteps);
+        String actual = formatter.formatDivisionResult(divisionResult);
+
+        String expected =
+                "_46|2" + "\n" +
+                " 4 |---" + "\n" +
+                " - |-23" + "\n" +
+                " _6" + "\n" +
+                "  6" + "\n" +
+                "  -" + "\n" +
+                "  0" ;
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
     void formatDivisionResult_shouldFormatDivisionResult_whenDividendHasZeros() {
         int dividend = 300010003;
         int divisor = 2;
 
-        DivisionResult divisionResult = calculator.calculateDivisionResult(dividend, divisor);
+        ArrayList<DivisionStep> divisionSteps = new ArrayList<>();
+        divisionSteps.add(new DivisionStep(3, 1, 2));
+        divisionSteps.add(new DivisionStep(10, 0, 10));
+        divisionSteps.add(new DivisionStep(10, 0, 10));
+        divisionSteps.add(new DivisionStep(3, 1, 2));
+        divisionSteps.add(new DivisionStep(0, 1, 0));
+        DivisionResult divisionResult = new DivisionResult(dividend, divisor, 150005001, divisionSteps);
         String actual = formatter.formatDivisionResult(divisionResult);
 
         String expected =
                 "_300010003|2" + "\n" +
                 " 2        |---------" + "\n" +
                 " -        |150005001" + "\n" +
-                " _10" + "\n" +
-                "  10" + "\n" +
-                "  --" + "\n" +
-                "  _10" + "\n" +
-                "   10" + "\n" +
-                "   --" + "\n" +
-                "   _3" + "\n" +
-                "    2" + "\n" +
-                "    -" + "\n" +
-                "    1";
+                "_10" + "\n" +
+                " 10" + "\n" +
+                " --" + "\n" +
+                "    _10" + "\n" +
+                "     10" + "\n" +
+                "     --" + "\n" +
+                "        _3" + "\n" +
+                "         2" + "\n" +
+                "         -" + "\n" +
+                "         1";
 
         assertEquals(expected, actual);
     }
@@ -141,18 +194,19 @@ class IntegerDivisionFormatterTest {
         int dividend = 30000003;
         int divisor = 15;
 
-        DivisionResult divisionResult = calculator.calculateDivisionResult(dividend, divisor);
+        ArrayList<DivisionStep> divisionSteps = new ArrayList<>();
+        divisionSteps.add(new DivisionStep(30, 0, 30));
+        divisionSteps.add(new DivisionStep(0, 3, 0));
+        DivisionResult divisionResult = new DivisionResult(dividend, divisor, 2000000, divisionSteps);
         String actual = formatter.formatDivisionResult(divisionResult);
 
         String expected =
-            "_30000003|15" + "\n" +
-            " 30      |-------" + "\n" +
-            " --      |2000000" + "\n" +
-            " 3";
-
+                "_30000003|15" + "\n" +
+                " 30      |-------" + "\n" +
+                " --      |2000000" + "\n" +
+                "        3";
 
         assertEquals(expected, actual);
     }
 }
-
 

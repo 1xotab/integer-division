@@ -1,6 +1,5 @@
 package com.foxminded.division.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,7 +28,6 @@ public class DivisionResult {
         return quotient;
     }
 
-
     public List<DivisionStep> getSteps() {
         return steps;
     }
@@ -52,7 +50,7 @@ public class DivisionResult {
         return "DivisionResult{" +
             "dividend=" + dividend +
             ", divisor=" + divisor +
-            ", quotient=" + quotient + '\n' +
+            ", quotient=" + quotient +
             ", divisionSteps=" + steps +
             '}';
     }

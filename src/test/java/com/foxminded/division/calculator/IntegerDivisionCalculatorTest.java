@@ -3,7 +3,6 @@ package com.foxminded.division.calculator;
 import com.foxminded.division.model.DivisionResult;
 import com.foxminded.division.model.DivisionStep;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,7 +26,9 @@ class IntegerDivisionCalculatorTest {
         DivisionResult actual = calculator.calculateDivisionResult(dividend, divisor);
 
         ArrayList<DivisionStep> expectedSteps = new ArrayList<>();
-        expectedSteps.add(new DivisionStep(dividend, dividend, 0));
+        expectedSteps.add(new DivisionStep(0, 0, 0));
+        expectedSteps.add(new DivisionStep(0, 0, 0));
+
         DivisionResult expected = new DivisionResult(dividend, divisor, 0, expectedSteps);
 
         assertEquals(expected, actual);
@@ -44,6 +45,8 @@ class IntegerDivisionCalculatorTest {
         ArrayList<DivisionStep> expectedSteps = new ArrayList<>();
         expectedSteps.add(new DivisionStep(12, 1, 11));
         expectedSteps.add(new DivisionStep(13, 2, 11));
+        expectedSteps.add(new DivisionStep(0, 2, 0));
+
         DivisionResult expected = new DivisionResult(dividend, divisor, 11, expectedSteps);
 
         assertEquals(expected, actual);
@@ -58,6 +61,8 @@ class IntegerDivisionCalculatorTest {
 
         ArrayList<DivisionStep> expectedSteps = new ArrayList<>();
         expectedSteps.add(new DivisionStep(dividend, dividend, 0));
+        expectedSteps.add(new DivisionStep(0, 2, 0));
+
         DivisionResult expected = new DivisionResult(dividend, divisor, 0, expectedSteps);
 
         assertEquals(expected, actual);
@@ -72,6 +77,8 @@ class IntegerDivisionCalculatorTest {
 
         ArrayList<DivisionStep> expectedSteps = new ArrayList<>();
         expectedSteps.add(new DivisionStep(dividend, dividend, 0));
+        expectedSteps.add(new DivisionStep(0, dividend, 0));
+
         DivisionResult expected = new DivisionResult(dividend, divisor, 0, expectedSteps);
 
         assertEquals(expected, actual);
@@ -86,7 +93,9 @@ class IntegerDivisionCalculatorTest {
 
         ArrayList<DivisionStep> expectedSteps = new ArrayList<>();
         expectedSteps.add(new DivisionStep(22, 2, 20));
-        DivisionResult expected = new DivisionResult(-dividend, divisor, 5, expectedSteps);
+        expectedSteps.add(new DivisionStep(0, 2, 0));
+
+        DivisionResult expected = new DivisionResult(-dividend, divisor, -5, expectedSteps);
 
         assertEquals(expected, actual);
     }
@@ -103,6 +112,8 @@ class IntegerDivisionCalculatorTest {
         expectedSteps.add(new DivisionStep(10, 0, 10));
         expectedSteps.add(new DivisionStep(10, 0, 10));
         expectedSteps.add(new DivisionStep(3, 1, 2));
+        expectedSteps.add(new DivisionStep(0, 1, 0));
+
         DivisionResult expected = new DivisionResult(dividend, divisor, 15000501, expectedSteps);
 
         assertEquals(expected, actual);
@@ -116,7 +127,9 @@ class IntegerDivisionCalculatorTest {
         DivisionResult actual = calculator.calculateDivisionResult(dividend, divisor);
 
         ArrayList<DivisionStep> expectedSteps = new ArrayList<>();
-        expectedSteps.add(new DivisionStep(30, 3, 30));
+        expectedSteps.add(new DivisionStep(30, 0, 30));
+        expectedSteps.add(new DivisionStep(0, 3, 0));
+
         DivisionResult expected = new DivisionResult(dividend, divisor, 2000000, expectedSteps);
 
         assertEquals(expected, actual);

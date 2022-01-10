@@ -3,23 +3,18 @@ package com.foxminded.division.model;
 import java.util.Objects;
 
 public class DivisionStep {
-    private final int dividend;
-    int remainder;
+    private final int elementaryDividend;
+    private final int remainder;
     private final int divisorMultiple;
 
     public DivisionStep(int dividend, int remainder, int divisorMultiple) {
-        this.dividend = dividend;
+        this.elementaryDividend = dividend;
         this.remainder = remainder;
         this.divisorMultiple = divisorMultiple;
     }
 
-
-    public void setRemainder(int remainder) {
-        this.remainder = remainder;
-    }
-
-    public int getDividend() {
-        return dividend;
+    public int getElementaryDividend() {
+        return elementaryDividend;
     }
 
     public int getRemainder() {
@@ -35,18 +30,18 @@ public class DivisionStep {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DivisionStep that = (DivisionStep) o;
-        return dividend == that.dividend && remainder == that.remainder && divisorMultiple == that.divisorMultiple;
+        return elementaryDividend == that.elementaryDividend && remainder == that.remainder && divisorMultiple == that.divisorMultiple;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dividend, remainder, divisorMultiple);
+        return Objects.hash(elementaryDividend, remainder, divisorMultiple);
     }
 
     @Override
     public String toString() {
         return "DivisionStep{" +
-            "dividend=" + dividend +
+            "dividend=" + elementaryDividend +
             ", remainder=" + remainder +
             ", divisorMultiple=" + divisorMultiple +
             '}';
